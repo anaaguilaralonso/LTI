@@ -2,6 +2,7 @@ plugins {
     kotlin("jvm") version "1.9.24"
     kotlin("plugin.serialization") version "1.9.24"
     application
+    id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
 group = "com.lti"
@@ -38,4 +39,9 @@ kotlin {
 
 tasks.named<JavaExec>("run") {
     standardInput = System.`in`
+}
+
+tasks.shadowJar {
+    archiveClassifier.set("all")
+    mergeServiceFiles()
 }

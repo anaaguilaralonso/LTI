@@ -17,5 +17,19 @@ services:
       timeout: 5s
       retries: 5
 
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: lti-backend
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    environment:
+      DATABASE_JDBC_URL: jdbc:postgresql://db:5432/lti_db
+    depends_on:
+      db:
+        condition: service_healthy
+
 volumes:
   lti_db_data:
