@@ -1,3 +1,8 @@
-# Copia a local.properties y ajusta la ruta de tu Android SDK.
-# No commitees local.properties (está en .gitignore).
-sdk.dir=/Users/TU_USUARIO/Library/Android/sdk
+# Copy to local.properties and adjust the values.
+# Do not commit local.properties (it is in .gitignore).
+
+sdk.dir=/Users/YOUR_USER/Library/Android/sdk
+
+# Ktor backend on your Mac (physical device on the same Wi‑Fi).
+# Mac IP: ipconfig getifaddr en0
+api.base.url=http://192.168.1.42:8080/
