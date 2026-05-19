@@ -1,26 +1,21 @@
-# LTI monorepo — Docker Compose (esqueleto)
-# Añade servicios cuando el backend esté definido.
-
 services:
-  # backend:
-  #   build: ./backend
-  #   ports:
-  #     - "8080:8080"
-  #   environment:
-  #     - NODE_ENV=development
-  #   depends_on:
-  #     - db
+  db:
+    image: postgres:16-alpine
+    container_name: lti-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: lti_db
+      POSTGRES_USER: lti_user
+      POSTGRES_PASSWORD: lti_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - lti_db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U lti_user -d lti_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
-  # db:
-  #   image: postgres:16-alpine
-  #   environment:
-  #     POSTGRES_USER: lti
-  #     POSTGRES_PASSWORD: lti
-  #     POSTGRES_DB: lti
-  #   ports:
-  #     - "5432:5432"
-  #   volumes:
-  #     - db_data:/var/lib/postgresql/data
-
-# volumes:
-#   db_data:
+volumes:
+  lti_db_data:

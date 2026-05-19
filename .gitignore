@@ -1,46 +1,61 @@
-# OS
+# --- OS ---
 .DS_Store
 Thumbs.db
 
-# IDE
-.idea/
-*.iml
-.vscode/
-*.swp
-*.swo
-
-# Environment & secrets
+# --- Entorno y secretos ---
 .env
 .env.*
 !.env.example
+*.local
+secrets.properties
+**/application-local.conf
+**/application-local.yaml
+**/application-local.yml
 
-# Logs
+# --- IDE (IntelliJ / Android Studio) ---
+.idea/
+*.iml
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/usage.statistics.xml
+.idea/shelf/
+
+# --- Logs ---
 *.log
 logs/
 
-# Android
-/android/.gradle/
-/android/build/
-/android/app/build/
+# --- Gradle (monorepo) ---
+.gradle/
+**/.gradle/
+**/build/
+!**/src/**/build/
+**/.kotlin/
+**/out/
+*.class
+
+# --- Android (/android) ---
 /android/local.properties
 /android/.cxx/
 /android/captures/
+/android/.externalNativeBuild/
+/android/.navigation/
 *.apk
 *.aab
+*.ap_
+*.dex
 *.keystore
 !debug.keystore
 
-# Backend (common)
-/backend/node_modules/
-/backend/dist/
+# --- Backend Ktor/Kotlin (/backend) ---
+/backend/.gradle/
 /backend/build/
-/backend/target/
-/backend/.venv/
-/backend/venv/
-/backend/__pycache__/
-*.pyc
-/backend/.pytest_cache/
-/backend/.mvn/wrapper/maven-wrapper.jar
+/backend/out/
+/backend/.kotlin/
 
-# Docker
+# --- Docker (desarrollo local) ---
 docker-compose.override.yml
+
+# --- Misc ---
+*.swp
+*.swo
+*~
