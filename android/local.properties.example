@@ -1,0 +1,3 @@
+# Copia a local.properties y ajusta la ruta de tu Android SDK.
+# No commitees local.properties (está en .gitignore).
+sdk.dir=/Users/TU_USUARIO/Library/Android/sdk
