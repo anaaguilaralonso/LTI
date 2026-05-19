@@ -1,7 +1,11 @@
 package com.lti
 
+import com.lti.db.DatabaseFactory
+import com.typesafe.config.ConfigFactory
 import io.ktor.serialization.kotlinx.json.*
+import io.ktor.server.application.ApplicationStopped
 import io.ktor.server.application.*
+import io.ktor.server.config.HoconApplicationConfig
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import io.ktor.server.plugins.contentnegotiation.*
@@ -13,11 +17,30 @@ import kotlinx.serialization.Serializable
 data class HealthResponse(val status: String)
 
 fun main() {
-    embeddedServer(Netty, port = 8080, host = "0.0.0.0", module = Application::module)
-        .start(wait = true)
+    embeddedServer(
+        Netty,
+        environment = applicationEngineEnvironment {
+            config = HoconApplicationConfig(ConfigFactory.load())
+            connector {
+                host = "0.0.0.0"
+                port = 8080
+            }
+            module(Application::module)
+        },
+    ).start(wait = true)
 }
 
 fun Application.module() {
+    DatabaseFactory.init(environment.config)
+    DatabaseFactory.verifyConnection().fold(
+        onSuccess = { log.info("PostgreSQL connection successful") },
+        onFailure = { log.error("PostgreSQL connection failed", it) },
+    )
+
+    environment.monitor.subscribe(ApplicationStopped) {
+        DatabaseFactory.close()
+    }
+
     install(ContentNegotiation) {
         json()
     }
